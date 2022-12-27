@@ -17,6 +17,7 @@
          <el-button class="home_href">重置</el-button>
       </div>
         <el-link type="primary" @click="goRegister">点击注册</el-link>
+        <el-link type="primary" @click="goHomepage">首页</el-link>
         </div>
   </div>
 </template>
@@ -33,6 +34,9 @@ export default {
   methods:{
       goRegister(){
           this.$router.push('/register')
+      },
+      goHomepage(){
+          this.$router.push('/Left_nav')
       }
   }
 };

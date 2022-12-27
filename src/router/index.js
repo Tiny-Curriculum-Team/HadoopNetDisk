@@ -2,6 +2,7 @@
 import Router from 'vue-router'  //引入vue-router
 import Register from '../views/user/register.vue'  //引入根目录下的Hello.vue组件
 import Login from '../views/user/login.vue'
+import Homepage from '../components/Left_nav.vue'
  
 Vue.use(Router)  //Vue全局使用Router
  
@@ -16,6 +17,11 @@ export default new Router({
         path:'/register',
         name: 'Register',
         component: Register
+    },
+    {
+      path:'/Left_nav',
+      name: 'Homepage',
+      component: Homepage  
     }
   ]
 })
