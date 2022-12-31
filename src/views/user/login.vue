@@ -3,17 +3,22 @@
     <img class="bgc" :src="bgcImage" alt="" />
     <div class="submit">
       <span class="form_title">登录</span>
+      <el-form :model="loginForm">
       <div class="form_input">
         <span>用户名：</span>
-        <el-input class="inputs" type="text" />
+        <el-form-item>
+        <el-input class="inputs" type="text" v-model="loginForm.username"/>
+        </el-form-item>
       </div>
       <div class="form_input">
         <span>密码：</span>
-        <el-input class="inputs" type="password" />
+        <el-form-item>
+        <el-input class="inputs" type="password" v-model="loginForm.password"/>
+        </el-form-item>
       </div>
-
+      </el-form>
       <div class="b_submit">
-         <el-button class="b">登录</el-button>
+         <el-button class="b" @click="login">登录</el-button>
          <el-button class="home_href">重置</el-button>
       </div>
         <el-link type="primary" @click="goRegister">点击注册</el-link>
@@ -24,11 +29,16 @@
 
 <script>
 import bgcImage from '/src/assets/images/pur.jpg'
+import getLogin from '/src/api/login.js'
 export default {
   name: "Login",
   data(){
       return{
-          bgcImage
+          bgcImage,
+          loginForm:{
+            username:'',
+            password:''
+          }
       }
   },
   methods:{
@@ -37,6 +47,11 @@ export default {
       },
       goHomepage(){
           this.$router.push('/Left_nav')
+      },
+      login(){
+        getLogin(this.loginForm).then((res)=>{
+          console.log(res);
+        })
       }
   }
 };
