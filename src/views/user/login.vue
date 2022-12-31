@@ -46,11 +46,26 @@ export default {
           this.$router.push('/register')
       },
       goHomepage(){
-          this.$router.push('/Left_nav')
+          this.$router.push('/home')
       },
       login(){
         getLogin(this.loginForm).then((res)=>{
-          console.log(res);
+          // console.log(res.data.token);
+          localStorage.setItem('token',res.data.token);
+          if(res.data.code ==200){
+            this.$router.push('/home')
+            this.$message({
+                showClose: true,
+                message: '登录成功',
+                type: 'success'
+                });
+          }else { //  登录失败
+                this.$message({
+                showClose: true,
+                message: '用户名或密码错误',
+                type: 'error'
+                });
+            }
         })
       }
   }

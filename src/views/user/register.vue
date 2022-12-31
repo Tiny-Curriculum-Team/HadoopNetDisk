@@ -3,48 +3,109 @@
     <img class="bgc" :src="bgcImage" alt="" />
     <div class="submit">
       <span class="form_title">注册</span>
-      <div class="form_input">
-        <span>用户名：</span>
-        <el-input class="inputs" type="text" />
-      </div>
-      <div class="form_input">
-        <span>密码：</span>
-        <el-input class="inputs" type="password" />
-      </div>
-      <div class="form_input">
-        <span>确认密码：</span>
-        <el-input class="inputs" type="password" />
-      </div>
-      <div class="form_input">
-        <span>电话：</span>
-        <el-input class="inputs" type="password" />
-      </div>
-      <div class="form_input">
-        <span>生日：</span>
-        <el-input class="inputs" type="password" />
-      </div>
-      <div class="form_input">
-        <span>头像：</span>
-        <el-input class="inputs" type="password" />
-      </div>
-
+      <el-form :model="registerForm">
+        <div class="form_input">
+          <span>用户名：</span>
+          <el-form-item>
+            <el-input
+              class="inputs"
+              type="text"
+              v-model="registerForm.username"
+            />
+          </el-form-item>
+        </div>
+        <div class="form_input">
+          <span>密码：</span>
+          <el-form-item>
+            <el-input
+              class="inputs"
+              type="password"
+              v-model="registerForm.password1"
+            />
+          </el-form-item>
+        </div>
+        <div class="form_input">
+          <span>确认密码：</span>
+          <el-form-item>
+            <el-input
+              class="inputs"
+              type="password"
+              v-model="registerForm.password2"
+            />
+          </el-form-item>
+        </div>
+        <div class="form_input">
+          <span>电话：</span>
+          <el-form-item>
+            <el-input
+              class="inputs"
+              type="password"
+              v-model="registerForm.tele"
+            />
+          </el-form-item>
+        </div>
+        <div class="form_input">
+          <span>生日：</span>
+          <el-form-item>
+            <!-- <el-input class="inputs" type="password" v-model="registerForm.birth"/> -->
+            <el-date-picker
+              v-model="registerForm.birth"
+              type="date"
+              placeholder="选择日期"
+              format="yyyy 年 MM 月 dd 日"
+              value-format="yyyy-MM-dd"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </div>
+        <div class="form_input">
+          <span>头像：</span>
+          <el-form-item>
+            <el-upload
+              class="avatar-uploader"
+              action="/api/usr/signin/"
+              :show-file-list="true"
+            >
+              <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+            </el-upload>
+          </el-form-item>
+        </div>
+      </el-form>
       <div class="b_submit">
-         <el-button class="b">重置</el-button>
-         <el-button class="home_href">注册</el-button>
+        <el-button class="b">重置</el-button>
+        <el-button class="home_href" @click="register">注册</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import bgcImage from '/src/assets/images/pur.jpg'
+import bgcImage from "/src/assets/images/pur.jpg";
+import getRegistor from "/src/api/login"
 export default {
   name: "Register",
-  data(){
-      return{
-          bgcImage
-      }
-  }
+  data() {
+    return {
+      bgcImage,
+      registerForm: {
+        username: "",
+        password1: "",
+        password2: "",
+        avatar: "",
+        tele: "",
+        birth: "",
+      },
+      imageUrl:''
+    };
+  },
+  methods: {
+    register() {
+      getRegistor(this.registerForm).then((res)=>{
+        console.log(res);
+      })
+    },
+  },
 };
 </script>
 
@@ -61,7 +122,7 @@ export default {
 
 .bgc {
   width: 100%;
-  height:100%;
+  height: 100%;
 }
 
 .submit {
@@ -72,9 +133,9 @@ export default {
   right: 0;
   bottom: 0;
   margin: auto;
-  margin-top: 150px;
+  margin-top: 80px;
   width: 600px;
-  height: 550px;
+  height: 650px;
   background: rgba(255, 255, 255, 0.2);
   border-radius: 10px;
   color: #fff;
@@ -139,4 +200,28 @@ export default {
   border-radius: 5px;
   background: #ffd204;
 }
+
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+    display: block;
+  }
 </style>
