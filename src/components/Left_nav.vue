@@ -64,6 +64,12 @@ export default {
       console.log(key, keyPath);
     },
   },
+//     watch:{
+//   $route(to,from){
+//     console.log(to.path);
+//     console.log(from.path);
+//   }
+// },
 };
 </script>
 

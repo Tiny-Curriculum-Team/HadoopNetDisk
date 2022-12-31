@@ -82,7 +82,7 @@
 
 <script>
 import bgcImage from "/src/assets/images/pur.jpg";
-import getRegistor from "/src/api/login"
+import getRegistor from "/src/api/register"
 export default {
   name: "Register",
   data() {
@@ -103,9 +103,23 @@ export default {
     register() {
       getRegistor(this.registerForm).then((res)=>{
         console.log(res);
+        if(res.data.code==200){
+          this.$message({
+                showClose: true,
+                message: '注册成功',
+                type: 'success'
+                });
+        }else{
+          this.$message({
+                showClose: true,
+                message: '注册失败',
+                type: 'error'
+                });
+        }
       })
     },
   },
+
 };
 </script>
 

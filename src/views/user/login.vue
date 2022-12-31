@@ -46,14 +46,14 @@ export default {
           this.$router.push('/register')
       },
       goHomepage(){
-          this.$router.push('/home')
+          this.$router.push('/index')
       },
       login(){
         getLogin(this.loginForm).then((res)=>{
           // console.log(res.data.token);
           localStorage.setItem('token',res.data.token);
           if(res.data.code ==200){
-            this.$router.push('/home')
+            this.$router.push('/index')
             this.$message({
                 showClose: true,
                 message: '登录成功',
