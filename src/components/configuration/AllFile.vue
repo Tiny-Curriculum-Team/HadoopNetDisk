@@ -6,10 +6,9 @@
         clearable
         class="searcher"
         size="small"
-        @keyup.enter="searchWeakPass"
         placeholder="请输入查找的文件名"
         el-icon-search
-      />
+      ></el-input>
     </div>
     <div>
       <div v-for="item of 4" :key="item">

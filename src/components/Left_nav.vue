@@ -3,7 +3,6 @@
   <el-container>
     <div class="nav">
       <el-row class="tac">
-        <el-col :span="12">
           <div class="logo-top">
             <svg-icon icon-class="logo"></svg-icon>
             <h3 class="title">网盘系统</h3>
@@ -44,11 +43,10 @@
               <el-button class="drop">退出账号</el-button>
             </el-menu>
            </el-aside>
-           <el-main>
+           <el-main class="mainbox">
              <router-view></router-view>
            </el-main>
           </el-container>
-        </el-col>
       </el-row>
     </div>
   </el-container>
@@ -64,12 +62,6 @@ export default {
       console.log(key, keyPath);
     },
   },
-//     watch:{
-//   $route(to,from){
-//     console.log(to.path);
-//     console.log(from.path);
-//   }
-// },
 };
 </script>
 
@@ -79,13 +71,13 @@ export default {
   padding: 0;
 }
 .nav {
-  width: 300px;
+  /* width: 100px; */
   height: 700px;
   box-shadow: 2px 2px 2px 2px rgba(147, 147, 147, 0.1);
 }
-.tac {
+/* .tac {
   width: 400px;
-}
+} */
 .el-menu-vertical-demo {
   margin-top: 10px;
 }
@@ -109,5 +101,9 @@ h3 {
 .svg-icon {
   margin-left: 20px;
   margin-top: 20px;
+}
+.mainbox{
+  width:calc(100vw - 320px);
+  margin-top:-30px;
 }
 </style>

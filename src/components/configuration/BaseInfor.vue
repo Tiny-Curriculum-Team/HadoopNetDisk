@@ -55,7 +55,12 @@ export default {
   },
     methods: {
       onSubmit() {
-        console.log('submit!');
+        // console.log('submit!');
+          this.$message({
+                showClose: true,
+                message: '修改成功',
+                type: 'success'
+                });
       }
     }
 };
