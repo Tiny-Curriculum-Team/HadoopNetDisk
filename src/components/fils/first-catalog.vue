@@ -67,6 +67,7 @@ export default {
     console.log(this.$route.params.name);
     this.data = this.$route.params.name;
     console.log(this.data);
+    this.getfils()
   },
 };
 </script>
