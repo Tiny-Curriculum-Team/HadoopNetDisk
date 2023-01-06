@@ -7,11 +7,11 @@ const api = {
 export default function searchFile(token,prefix){
   return createAxios({
       url:api.searchfile,
-      method:'POST',
+      method:'GET',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
         }, 
-      data:{
+      params:{
         token,
         prefix
       }
