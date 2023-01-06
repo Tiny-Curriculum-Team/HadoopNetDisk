@@ -7,11 +7,11 @@ const api = {
 export default function deleteFile(token,file_paths){
   return createAxios({
       url:api.deletefile,
-      method:'POST',
+      method:'GET',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded'
         }, 
-      data:{
+      params:{
         token,
         file_paths
       }

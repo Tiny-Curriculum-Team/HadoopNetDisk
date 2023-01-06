@@ -7,7 +7,7 @@ const api = {
 export default function download(token,require_path){
   return createAxios({
       url:api.downloadfile,
-      method:'POST',
+      method:'GET',
       data:{
         token,
        require_path
