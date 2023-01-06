@@ -1,14 +1,14 @@
 <template>
   <div>
     <h1>文件传输</h1>
-    <!-- <div style="margin-top: 50px; margin-left: 50px">
+    <div style="margin-top: 50px; margin-left: 50px">
       <el-upload
         class="upload-demo"
         drag
         action=""
         :on-preview="handlePreview"
         :on-remove="handleRemove"
-        
+        :headers="headers"
        
         :limit="1"
         
@@ -22,7 +22,7 @@
       </el-upload>
        <el-input v-model="path" placeholder="请输入存放路径"></el-input>
        <div class="el-upload__text"><el-button type="primary">点击上传</el-button></div>
-    </div> -->
+    </div>
     <!-- <div class="upload">
       <div class="div-label">
         <label
@@ -41,23 +41,7 @@
         <i class="el-icon-download el-icon--right">下载文件</i>
       </el-button>
     </div> -->
-    <el-upload class="upload-demo" 
-action="" 
-:on-change="handleChange" 
-:on-remove="handleRemove" 
-:before-remove="beforeRemove" 
-multiple 
-:limit="3" 
-:on-exceed="handleExceed" 
-:file-list="fileList"  
-:before-upload="onBeforeUploadImage">
-<el-button style="margin-top: 40px;" size="small" type="primary">Upload Files</el-button>
-<div slot="tip" class="el-upload__tip">Upload Document, No more than 3 files</div>
-</el-upload>
-
-
   </div>
- 
 </template>
 
 <script>
@@ -67,76 +51,54 @@ export default {
   data() {
     return {
       
-      // fileList: [],
+      fileList: [],
       newFile:new FormData(),
       filename:'',
       suffix:'',
-      path:''
+      path:'',
+      headers:{
+        "Content-Type": "multipart/form-data"
+      }
     };
   },
   methods:{
-    nBeforeUploadImage(file, fileList) {
-				if(this.formData.length == 0){
-					this.formData = new FormData();
-				}
-				this.formData.append('file', file.file);
-        console.log(fileList);
-    },
-    onSubmit() {
-      const token = localStorage.getItem('token')
-      this.formData.append('token', token);
-				this.formData.append('filename', 'Garry Wu');
-				this.formData.append('path', '/');
-				let headers = {
-					headers: {
-						"Content-Type": "multipart/form-data"
-					}
-				}
-				getfile(this.formData, headers)
-					.then((res) => {
-              console.log(res);
-					})
-					.catch((err) => {
-						return err
-					});
-			},
-    //  handleRemove(file, fileList) {
-    //     console.log(file, fileList);
-    //   },
-    //   handlePreview(file) {
-    //     console.log(file);
-    //   },
-    //   // handleExceed(files, fileList) {
-    //   //   this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-    //   // },
-    //   beforeRemove(file) {
-    //     return this.$confirm(`确定移除 ${ file.name }？`);
-    //   },
-    //   BeforeUpload(file){
-    //     if(file){
-    //       this.newFile.append('file',file);
-    //       this.filename = this.newFile.get('file').name.split('.')[0]
-    //       this.suffix = this.newFile.get('file').type.split('/')[1]
-    //       this.newFile.append('filename',this.filename);
-    //       this.newFile.append('suffix',this.suffix);
-    //       // console.log(this.filename);
-    //       // console.log(this.newFile.get('file'));
-    //     }else{
-    //       return false
-    //     }
-    //   },
-    //   Upload(){
-    //     const token = localStorage.getItem('token')
-    //     this.newFile.append('token',token);
-    //     this.newFile.append('path',this.path);
-    //     const newData = this.newFile;
-    //     newData.forEach((value,key)=>{
-    //       console.log("key %s: value %s",key,value);
-    //     })
-    //     getfile(newData).then((res=>{
-    //       console.log(res);
-    //     }))
-    //   }
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      // handleExceed(files, fileList) {
+      //   this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      // },
+      beforeRemove(file) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      BeforeUpload(file){
+        if(file){
+          this.newFile.append('file',file);
+          this.filename = this.newFile.get('file').name.split('.')[0]
+          this.suffix = this.newFile.get('file').type.split('/')[1]
+          this.newFile.append('filename',this.filename);
+          this.newFile.append('suffix',this.suffix);
+          // console.log(this.filename);
+          // console.log(this.newFile.get('file'));
+        }else{
+          return false
+        }
+      },
+      Upload(){
+        const token = localStorage.getItem('token')
+        this.newFile.append('token',token);
+        this.newFile.append('path',this.path);
+        const newData = this.newFile;
+        newData.forEach((value,key)=>{
+          console.log("key %s: value %s",key,value);
+        })
+        getfile(newData).then((res=>{
+          console.log(res);
+        }))
+      }
   }
 };
 </script>
