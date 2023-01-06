@@ -2,10 +2,9 @@ import jwt
 import json
 import os.path
 import urllib.parse
-import random
 import sys
 
-import shutil
+from shutil import rmtree
 from Files.utils import *
 from Users.models import User
 from django.conf import settings
@@ -14,14 +13,13 @@ from django.http import FileResponse, JsonResponse
 
 def upload_files(request):
     # 接收到formdata的出文件之外的数据
-    data = request.POST
     token = request.POST.get('token')
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
-    file_name = data.get('filename')
-    file_path = data.get('path')
-    row_data = random.randint(1, 100000)
+    file_path = request.POST.get('path')
     new_file = request.FILES.get('file')
+    file_name = new_file.name
+    file_size = new_file.size
     temp_dir = os.path.join(settings.MEDIA_ROOT, user_name)
     if not os.path.exists(temp_dir):
         os.mkdir(temp_dir)
@@ -35,20 +33,19 @@ def upload_files(request):
         with open(temp_path, "wb") as f:
             f.write(new_file.read())
 
-    if not (token and file_name and new_file):
+    if not (token and new_file):
         return JsonResponse({'code': 500, 'message': '请求参数错误'})
     try:
         hdfs_path = os.path.join("_files", user_name, file_path)
         client_hdfs = connect_to_hdfs()
         upload_to_hdfs(client_hdfs, temp_path, hdfs_path)
-        file_size = os.path.getsize(temp_path) / (1024 * 1024 * 1024)
         current_user = User.objects.get(user_name=user_name)
         current_user.available_store -= file_size
         current_user.save()
-        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, user_name))
+        rmtree(os.path.join(settings.MEDIA_ROOT, user_name))
     except Exception as e:
         print(e)
-        shutil.rmtree(os.path.join(settings.MEDIA_ROOT, user_name))
+        rmtree(os.path.join(settings.MEDIA_ROOT, user_name))
         return JsonResponse({'code': 500, 'message': 'hdfs error'})
     try:
         client_hbase = connect_to_hbase()
@@ -59,7 +56,7 @@ def upload_files(request):
         reference_path = os.path.join(hdfs_path, file_name)
         insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "filename", file_name)
         insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "suffix", file_name.split('.')[-1])
-        insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "hdfspath", hdfs_path)
+        insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "hdfspath", reference_path)
         insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "username", user_name)
         insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "permission", 0)
         insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "size", sys.getsizeof(new_file))
