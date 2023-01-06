@@ -18,11 +18,10 @@
         :headers="headers"
       >
         <i class="el-icon-upload"></i>
-
-        <div class="el-upload__text"><el-button type="primary">点击上传</el-button></div>
-        <el-input v-model="path" placeholder="请输入存放路径"></el-input>
         <div class="el-upload__tip" slot="tip">请勿上传1G以上的文件</div>
       </el-upload>
+       <el-input v-model="path" placeholder="请输入存放路径"></el-input>
+       <div class="el-upload__text"><el-button type="primary">点击上传</el-button></div>
     </div>
     <!-- <div class="upload">
       <div class="div-label">
