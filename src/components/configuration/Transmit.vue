@@ -5,7 +5,7 @@
       <el-upload
         class="upload-demo"
         drag
-        action=""
+        action="/file/upload/"
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
@@ -78,6 +78,8 @@ export default {
           this.newFile.append('file',file);
           this.filename = this.newFile.get('file').name.split('.')[0]
           this.suffix = this.newFile.get('file').type.split('/')[1]
+          this.newFile.append('filename',this.filename);
+          this.newFile.append('suffix',this.suffix);
           // console.log(this.filename);
           // console.log(this.newFile.get('file'));
         }else{
@@ -86,8 +88,10 @@ export default {
       },
       Upload(){
         const token = localStorage.getItem('token')
+        this.newFile.append('token',token);
+        this.newFile.append('path',this.path);
         const newData = this.newFile;
-        console.log(newData);
+        console.log(this.newFile);
         getfile(token,this.filename,this.suffix,this.path,newData).then((res=>{
           console.log(res);
         }))
