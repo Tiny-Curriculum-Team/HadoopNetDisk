@@ -6,7 +6,13 @@
         class="upload-demo"
         drag
         action="https://jsonplaceholder.typicode.com/posts/"
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
         multiple
+        :limit="1"
+        :on-exceed="handleExceed"
+        :file-list="fileList"
         :headers="headers"
       >
         <i class="el-icon-upload"></i>
@@ -38,23 +44,38 @@
 <script>
 export default {
   name: "Transmit",
-  data(){
-    return{
-      headers:{
-         'Authorization': 'JWT ' + localStorage.getItem('token'),
+  data() {
+    return {
+      headers: {
+        Authorization: "JWT " + localStorage.getItem("token"),
+      },
+      fileList: []
+    };
+  },
+  methods:{
+     handleRemove(file, fileList) {
+        console.log(file, fileList);
+      },
+      handlePreview(file) {
+        console.log(file);
+      },
+      handleExceed(files, fileList) {
+        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      },
+      beforeRemove(file) {
+        return this.$confirm(`确定移除 ${ file.name }？`);
       }
-    }
   }
 };
 </script>
 
 <style scoped>
-.div-label{
-    margin-top:100px;
+.div-label {
+  margin-top: 100px;
 }
-.upload{
-    width:500px;
-    height:500px;
-    margin-left:50px
+.upload {
+  width: 500px;
+  height: 500px;
+  margin-left: 50px;
 }
 </style>

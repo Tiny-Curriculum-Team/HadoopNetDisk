@@ -70,7 +70,7 @@
                 :src="bgcImg"
                 style="width: 100px; height: 100px"
               ></el-image>
-            <span class="filPath" @click="goFile(item.path)">{{ item.path }}</span>
+            <span class="filPath" @click="goFile(item.file_name)">{{ item.file_name }}</span>
             <div>文件类型：{{ item.type }}</div>
           </div>
         </div>
@@ -102,11 +102,11 @@ export default {
       console.log(111);
     },
     getfiles() {
-      let require_path = './'
+      let require_path = ''
       let token = localStorage.getItem('token')
       getfile(token,require_path).then((res) => {
         // console.log(res.data.data.data.length);
-        this.fils = res.data.data.data;
+        this.fils = res.data;
         // for(var i=0;i<res.data.data.data.length;i++){
         //   this.fils.push(res.data.data.data[i])
         // }
@@ -114,7 +114,7 @@ export default {
         // console.log(this.fils);
       });
     },
-    goFile(path){
+    goFile(name){
       // console.log(e);
       // var test = e.split("\\");
       // console.log(test);
@@ -122,7 +122,7 @@ export default {
         path:'/home/allfile/first-catalog',
         name:'FirstCatalog',
         params:{
-          path
+          name
         }
       })
     }
