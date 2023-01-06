@@ -8,7 +8,6 @@
         action=""
         :on-preview="handlePreview"
         :on-remove="handleRemove"
-        :headers="headers"
        
         :limit="1"
         
@@ -50,14 +49,11 @@ export default {
   name: "Transmit",
   data() {
     return {
+      
       fileList: [],
       newFile:new FormData(),
       filename:'',
-      suffix:'',
       path:'',
-      headers:{
-        "Content-Type": "multipart/form-data"
-      }
     };
   },
   methods:{
@@ -76,10 +72,10 @@ export default {
       BeforeUpload(file){
         if(file){
           this.newFile.append('file',file);
-          this.filename = this.newFile.get('file').name.split('.')[0]
-          this.suffix = this.newFile.get('file').type.split('/')[1]
-          this.newFile.append('filename',this.filename);
-          this.newFile.append('suffix',this.suffix);
+          this.filename = this.newFile.get('file').name
+          // this.suffix = this.newFile.get('file').type.split('/')[1]
+          // this.newFile.append('filename',this.filename);
+          // this.newFile.append('suffix',this.suffix);
           // console.log(this.filename);
           // console.log(this.newFile.get('file'));
         }else{
@@ -88,13 +84,19 @@ export default {
       },
       Upload(){
         const token = localStorage.getItem('token')
-        this.newFile.append('token',token);
-        this.newFile.append('path',this.path);
+        // this.newFile.append('token',token);
+        // this.newFile.append('path',this.path);
         const newData = this.newFile;
-        newData.forEach((value,key)=>{
-          console.log("key %s: value %s",key,value);
-        })
-        getfile(newData).then((res=>{
+        // newData.forEach((value,key)=>{
+        //   console.log("key %s: value %s",key,value);
+        // })
+        // console.log(token);
+        // console.log(this.filename);
+        // console.log(this.path);
+        // newData.forEach((value,key)=>{
+        //   console.log("key %s: value %s",key,value);
+        // })
+        getfile(token,this.filename,this.path,newData).then((res=>{
           console.log(res);
         }))
       }
