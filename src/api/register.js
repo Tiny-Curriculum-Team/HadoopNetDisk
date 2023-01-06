@@ -8,6 +8,9 @@ export default function getRegistor(registerForm) {
     return createAxios({
       url: api.register,
       method: "POST",
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+        }, 
       data: {
         username: registerForm.username,
         password1: registerForm.password1,

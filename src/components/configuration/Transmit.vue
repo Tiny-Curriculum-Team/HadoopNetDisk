@@ -50,7 +50,6 @@ export default {
   name: "Transmit",
   data() {
     return {
-      
       fileList: [],
       newFile:new FormData(),
       filename:'',

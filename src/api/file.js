@@ -7,7 +7,10 @@ const api = {
 export default function getfile(token,require_path){
     return createAxios({
         url:api.showfile,
-        method:'GET',
+        method:'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+          }, 
         params:{
           token,
           require_path

@@ -9,6 +9,9 @@ export default  function getLogin(loginForm) {
   return createAxios({
     url: api.login,
     method: "POST",
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+      }, 
     data: {
       username: loginForm.username,
       password: loginForm.password,
