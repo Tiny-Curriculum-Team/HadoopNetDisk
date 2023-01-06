@@ -16,47 +16,50 @@ def upload_files(request):
     data = request.POST
     token = request.POST.get('token')
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
-    user_name = info_dict['username']
-    file_name = data.get('filename')
-    file_suffix = data.get('suffix')
-    file_path = data.get('path')
-    row_data = random.randint(1, 100000)
-    new_file = request.FILES.get('file')
-
-    temp_path = os.path.join(settings.MEDIA_ROOT, user_name, file_name)
-    with open(temp_path, "wb") as f:
-        f.write(new_file)
-
-    root_path = "http://127.0.0.1:14000/"
-    if not (token and user_name and file_name and file_suffix and file_path and new_file):
-        return JsonResponse({'code': 500, 'message': '请求参数错误'})
-    try:
-        hdfs_path = os.path.join(root_path, user_name, file_path)  # 例："http://127.0.0.1:9870/xiaomai/download"
-        client_hdfs = connect_to_hdfs()
-        upload_to_hdfs(client_hdfs, temp_path, hdfs_path)
-
-        file_size = os.path.getsize(temp_path) / (1024 * 1024 * 1024)
-        current_user = User.objects.get(user_name=user_name)
-        current_user.available_store -= file_size
-        current_user.save()
-    except Exception as e:
-        print(e)
-        return JsonResponse({'code': 500, 'message': 'hdfs error'})
-    try:
-        client_hbase = connect_to_hbase()
-        if not ("SBhbase" in list_all_tables(client_hbase)):
-            create_table(client_hbase, "SBhbase", "fileinfo", "filedata")
-            # "fileinfo"                            "filedata"
-            # "filename", "suffix", "hdfspath"      "username", "permission", "size"
-            insert_a_row(client_hbase, user_name, row_data, "fileinfo", "filename", file_name)
-            insert_a_row(client_hbase, user_name, row_data, "fileinfo", "suffix", file_suffix)
-            insert_a_row(client_hbase, user_name, row_data, "fileinfo", "hdfspath", hdfs_path)
-            insert_a_row(client_hbase, user_name, row_data, "filedata", "username", user_name)
-            insert_a_row(client_hbase, user_name, row_data, "filedata", "permission", 0)
-            insert_a_row(client_hbase, user_name, row_data, "filedata", "size", sys.getsizeof(new_file))
-    except Exception as e:
-        print(e)
-        return JsonResponse({'code': 500, 'message': 'hbase error'})
+    # user_name = info_dict['username']
+    # print(user_name)
+    # file_name = data.get('filename')
+    # print(data.get("path"))
+    # file_path = "" if data.get('path') is None else data.get('path')
+    # row_data = random.randint(1, 100000)
+    # new_file = request.FILES.get('file')
+    # temp_path = os.path.join(settings.MEDIA_ROOT, user_name, file_name)
+    # with open(temp_path, "wb") as f:
+    #     f.write(new_file)
+    # print(temp_path)
+    #
+    # if not (token and user_name and file_name and file_suffix and file_path and new_file):
+    #     return JsonResponse({'code': 500, 'message': '请求参数错误'})
+    # try:
+    #     hdfs_path = os.path.join("_files", user_name, file_path)
+    #     print(hdfs_path)
+    #     client_hdfs = connect_to_hdfs()
+    #     upload_to_hdfs(client_hdfs, temp_path, hdfs_path)
+    #
+    #     file_size = os.path.getsize(temp_path) / (1024 * 1024 * 1024)
+    #     current_user = User.objects.get(user_name=user_name)
+    #     current_user.available_store -= file_size
+    #     current_user.save()
+    #     os.removedirs(os.path.join(settings.MEDIA_ROOT, user_name))
+    # except Exception as e:
+    #     print(e)
+    #     os.removedirs(os.path.join(settings.MEDIA_ROOT, user_name))
+    #     return JsonResponse({'code': 500, 'message': 'hdfs error'})
+    # try:
+    #     client_hbase = connect_to_hbase()
+    #     if not ("SBhbase" in list_all_tables(client_hbase)):
+    #         create_table(client_hbase, "SBhbase", "fileinfo", "filedata")
+    #         # "fileinfo"                            "filedata"
+    #         # "filename", "suffix", "hdfspath"      "username", "permission", "size"
+    #     insert_a_row(client_hbase, user_name, row_data, "fileinfo", "filename", file_name)
+    #     insert_a_row(client_hbase, user_name, row_data, "fileinfo", "suffix", file_name.split('.')[-1])
+    #     insert_a_row(client_hbase, user_name, row_data, "fileinfo", "hdfspath", hdfs_path)
+    #     insert_a_row(client_hbase, user_name, row_data, "filedata", "username", user_name)
+    #     insert_a_row(client_hbase, user_name, row_data, "filedata", "permission", 0)
+    #     insert_a_row(client_hbase, user_name, row_data, "filedata", "size", sys.getsizeof(new_file))
+    # except Exception as e:
+    #     print(e)
+    #     return JsonResponse({'code': 500, 'message': 'hbase error'})
 
     # 接收文件，getlist是接收多个文件
     # formdata在vue中同一个key传入了多个value，value成为了一个数组，所以需要使用getlist来获取所有文件
@@ -128,17 +131,18 @@ def get_all_files(request):
     token = request.GET.get('token')
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
-
     request_path = request.GET.get('require_path')
     cli = connect_to_hdfs()
     hdfs_check_user_folder_exists(cli, user_name)
-    request_path = ""
     user_root_dir = os.path.join('_files', user_name, request_path)
     file_dict = hdfs_list(cli, user_root_dir, verbose=True)
     res_dict = {}
     file_id = 0
     for item in file_dict:
-        res_dict.update({file_id: {item[0]: item[1]['type']}})
+        res_dict.update({file_id: {"file_name": item[0], "type": item[1]['type']}})
         file_id += 1
-    print(res_dict)
     return JsonResponse(res_dict)
+
+
+def test_func(request):
+    print(request)
