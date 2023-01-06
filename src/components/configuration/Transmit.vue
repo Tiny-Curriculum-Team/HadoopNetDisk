@@ -5,17 +5,17 @@
       <el-upload
         class="upload-demo"
         drag
-        action="/file/upload/"
+        action=""
         :on-preview="handlePreview"
         :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        multiple
+        
+       
         :limit="1"
-        :on-exceed="handleExceed"
+        
         :file-list="fileList"
         :before-upload="BeforeUpload"
         :http-request="Upload"
-        :headers="headers"
+       
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__tip" slot="tip">请勿上传1G以上的文件</div>
@@ -50,9 +50,7 @@ export default {
   name: "Transmit",
   data() {
     return {
-      headers: {
-        Authorization:localStorage.getItem("token"),
-      },
+      
       fileList: [],
       newFile:new FormData(),
       filename:'',
@@ -67,9 +65,9 @@ export default {
       handlePreview(file) {
         console.log(file);
       },
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
+      // handleExceed(files, fileList) {
+      //   this.$message.warning(`当前限制选择 1 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+      // },
       beforeRemove(file) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
@@ -91,8 +89,10 @@ export default {
         this.newFile.append('token',token);
         this.newFile.append('path',this.path);
         const newData = this.newFile;
-        console.log(this.newFile);
-        getfile(token,this.filename,this.suffix,this.path,newData).then((res=>{
+        // newData.forEach((value,key)=>{
+        //   console.log("key %s: value %s",key,value);
+        // })
+        getfile(newData).then((res=>{
           console.log(res);
         }))
       }
