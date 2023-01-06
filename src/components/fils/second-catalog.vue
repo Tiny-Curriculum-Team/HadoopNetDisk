@@ -27,13 +27,14 @@ export default {
   data() {
     return {
       bgcImg,
-      data: [],
+      data: '',
       fils: [],
+      lastName:''
     };
   },
   methods: {
     getfils() {
-      let require_path = this.data;
+      let require_path =this.lastName+ '/'+ this.data;
       let token = localStorage.getItem("token");
       getfile(token, require_path).then((res) => {
         this.fils = res.data;
@@ -55,6 +56,7 @@ export default {
   mounted() {
     console.log(this.$route.params.name);
     this.data = this.$route.params.name;
+    this.lastName = this.$route.params.lastName;
     console.log(this.data);
     this.getfils()
   },

@@ -59,6 +59,7 @@ export default {
         name:"SecondCatalog",
         params: {
           name,
+          lastName:this.data
         },
       });
     },
