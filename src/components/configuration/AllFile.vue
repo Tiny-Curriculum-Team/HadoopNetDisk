@@ -2,14 +2,16 @@
   <div>
     <div>
       <el-button>显示全部文件</el-button>
-      <el-input
-        clearable
+      <input
         class="searcher"
         size="small"
         placeholder="请输入查找的文件名"
         el-icon-search
-      ></el-input>
+        v-model="prefix"
+        @keyup.enter="searchFiles"
+      >
     </div>
+    
     <!-- <div>
       <div v-for="item of 4" :key="item">
         <div style="float: left">
@@ -86,6 +88,7 @@ import fileImg from "/src/assets/images/file.png";
 import fileImags from "/src/assets/images/file.jpg";
 
 import getfile from "/src/api/file";
+import searchFile from "/src/api/search"
 
 export default {
   name: "AllFile",
@@ -95,12 +98,16 @@ export default {
       fileImg,
       fileImags,
       fils: [],
+      prefix:''
       // require_path:''
     };
   },
   methods: {
-    searchWeakPass() {
-      console.log(111);
+    searchFiles() {
+      const token = localStorage.getItem
+      searchFile(token,this.prefix).then((res)=>{
+        this.fils = res.data;
+      })
     },
     getfiles() {
       let require_path = ''
