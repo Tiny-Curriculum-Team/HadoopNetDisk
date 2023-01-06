@@ -7,13 +7,14 @@
         drag
         action="https://jsonplaceholder.typicode.com/posts/"
         multiple
+        :headers="headers"
       >
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <div class="el-upload__tip" slot="tip">请勿上传1G以上的文件</div>
       </el-upload>
     </div>
-    <div class="upload">
+    <!-- <div class="upload">
       <div class="div-label">
         <label
           >请输入需要下载的文件<span style="font-weight: bold;padding-bottom:20px"
@@ -30,13 +31,20 @@
       >
         <i class="el-icon-download el-icon--right">下载文件</i>
       </el-button>
-    </div>
+    </div> -->
   </div>
 </template>
 
 <script>
 export default {
   name: "Transmit",
+  data(){
+    return{
+      headers:{
+         'Authorization': 'JWT ' + localStorage.getItem('token'),
+      }
+    }
+  }
 };
 </script>
 
