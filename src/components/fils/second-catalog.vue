@@ -63,4 +63,24 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.filbox {
+  width: 1000px;
+  height: 100px;
+  margin-top: 20px;
+  margin-left: 80px;
+  border: 1px solid #ddd;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.filPath{
+  display:inline-block;
+  height:100px;
+  width:400px;
+  line-height:100px;
+  flex-shrink:0;
+  font-size:14px;
+  margin-left:20px;
+}
+</style>
