@@ -100,7 +100,6 @@ export default {
       getfile(newData).then((res) => {
         console.log(res);
         if(res.data.code ==200){
-            this.$router.push('/home')
             this.$message({
                 showClose: true,
                 message: '登录成功',
