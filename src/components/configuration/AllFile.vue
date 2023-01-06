@@ -104,7 +104,7 @@ export default {
   },
   methods: {
     searchFiles() {
-      const token = localStorage.getItem
+      const token = localStorage.getItem('token')
       searchFile(token,this.prefix).then((res)=>{
         this.fils = res.data;
       })
