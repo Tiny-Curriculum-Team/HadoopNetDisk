@@ -1,5 +1,4 @@
 import jwt
-import json
 import os.path
 import urllib.parse
 import sys
@@ -54,12 +53,13 @@ def upload_files(request):
             # "fileinfo"                            "filedata"
             # "filename", "suffix", "hdfspath"      "username", "permission", "size"
         reference_path = os.path.join(hdfs_path, file_name)
-        insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "filename", file_name)
-        insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "suffix", file_name.split('.')[-1])
-        insert_a_row(client_hbase, "SBhbase", reference_path, "fileinfo", "hdfspath", reference_path)
-        insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "username", user_name)
-        insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "permission", 0)
-        insert_a_row(client_hbase, "SBhbase", reference_path, "filedata", "size", sys.getsizeof(new_file))
+        row_key = file_name + "|" + reference_path
+        insert_a_row(client_hbase, "SBhbase", row_key, "fileinfo", "filename", file_name)
+        insert_a_row(client_hbase, "SBhbase", row_key, "fileinfo", "suffix", file_name.split('.')[-1])
+        insert_a_row(client_hbase, "SBhbase", row_key, "fileinfo", "hdfspath", reference_path)
+        insert_a_row(client_hbase, "SBhbase", row_key, "filedata", "username", user_name)
+        insert_a_row(client_hbase, "SBhbase", row_key, "filedata", "permission", 0)
+        insert_a_row(client_hbase, "SBhbase", row_key, "filedata", "size", sys.getsizeof(new_file))
         return JsonResponse({'code': 200, 'message': '上传成功'})
     except Exception as e:
         print(e)
@@ -78,24 +78,27 @@ def download_files(request):
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
 
-    file_paths = request.GET.get('file_paths')
+    require_path = request.GET.get('require_path')
     cli = connect_to_hdfs()
-    for user_file_path in file_paths:
-        file_path = os.path.join('_files', user_name, user_file_path)
-        temp_path = os.path.join(settings.MEDIA_ROOT, user_file_path)
-        download_from_hdfs(cli, file_path, temp_path)
+    file_path = os.path.join('_files', user_name, require_path)
+    temp_path = os.path.join(settings.MEDIA_ROOT, require_path)
+    file_name = file_path.split("/")[-1]
+    download_from_hdfs(cli, file_path, temp_path)
 
-    compress_file_name = user_name + '.zip'
-    compress_file_path = os.path.join(settings.MEDIA_ROOT, compress_file_name)
-    compress_path = os.path.join(settings.MEDIA_ROOT, user_name)
-    zip_ya(compress_path, compress_file_name, settings.MEDIA_ROOT)
+    # compress_file_name = user_name + '.zip'
+    # compress_file_path = os.path.join(settings.MEDIA_ROOT, compress_file_name)
+    # compress_path = os.path.join(settings.MEDIA_ROOT, user_name)
+    # zip_ya(compress_path, compress_file_name, settings.MEDIA_ROOT)
+    # print("#" * 64)
 
-    file = open(compress_file_path, 'rb')
+    # file = open(compress_file_path, 'rb')
+    file = open(temp_path, 'rb')
     file_response = FileResponse(file)
     file_response['Content-Type'] = 'application/octet-stream'
     file_response[
         "Access-Control-Expose-Headers"] = 'Content-Disposition'
-    file_response['Content-Disposition'] = 'attachment;filename={}'.format(urllib.parse.quote(compress_file_name))
+    file_response['Content-Disposition'] = 'attachment;filename={}'.format(urllib.parse.quote(file_name))
+    # os.remove(temp_path)
     return file_response
 
 
@@ -103,13 +106,11 @@ def search_for_files(request):
     token = request.GET.get('token')
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
-    data = request.POST
-    profix = data.get("prefix")
+    prefix = request.GET.get("prefix")
     try:
         client_hbase = connect_to_hbase()
-        result = find_file(client_hbase, "SBhbase", profix, "filename")
-        print(result)
-        return JsonResponse(json.dumps(result))
+        result = find_file(client_hbase, "SBhbase", prefix, ["fileinfo:filename"])
+        return JsonResponse(result)
     except Exception as e:
         print(e)
         return JsonResponse({"code": 500, "message": "Error to search"})
@@ -120,15 +121,15 @@ def del_files(request):
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
 
-    file_paths = request.GET.get('file_paths')
+    file_path = request.GET.get('file_paths')
     cli = connect_to_hdfs()
-    for file_to_del in file_paths:
-        try:
-            file_path = os.path.join('_files', user_name, file_to_del)
-            hdfs_del_files(cli, file_path)
-        except Exception as e:
-            print(e)
-    return JsonResponse({'code': 200, 'message': '删除操作已完成'})
+    try:
+        file_path = os.path.join('/user', 'hadoop', '_files', user_name, file_path)
+        hdfs_del_files(cli, file_path)
+        return JsonResponse({'code': 200, 'message': '删除操作已完成'})
+    except Exception as e:
+        print(e)
+        return JsonResponse({'code': 500, 'message': '删除操作失败，文件不存在'})
 
 
 def get_all_files(request):
@@ -146,7 +147,3 @@ def get_all_files(request):
         res_dict.update({file_id: {"file_name": item[0], "type": item[1]['type']}})
         file_id += 1
     return JsonResponse(res_dict)
-
-
-def test_func(request):
-    print(request)
