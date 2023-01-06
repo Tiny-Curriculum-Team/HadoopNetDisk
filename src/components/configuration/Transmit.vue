@@ -5,7 +5,7 @@
       <el-upload
         class="upload-demo"
         drag
-        action="https://jsonplaceholder.typicode.com/posts/"
+        action=""
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :before-remove="beforeRemove"
@@ -13,10 +13,14 @@
         :limit="1"
         :on-exceed="handleExceed"
         :file-list="fileList"
+        :before-upload="BeforeUpload"
+        :http-request="Upload"
         :headers="headers"
       >
         <i class="el-icon-upload"></i>
-        <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+
+        <div class="el-upload__text"><el-button type="primary">点击上传</el-button></div>
+        <el-input v-model="path" placeholder="请输入存放路径"></el-input>
         <div class="el-upload__tip" slot="tip">请勿上传1G以上的文件</div>
       </el-upload>
     </div>
@@ -42,14 +46,19 @@
 </template>
 
 <script>
+import getfile from "/src/api/upload"
 export default {
   name: "Transmit",
   data() {
     return {
       headers: {
-        Authorization: "JWT " + localStorage.getItem("token"),
+        Authorization:localStorage.getItem("token"),
       },
-      fileList: []
+      fileList: [],
+      newFile:new FormData(),
+      filename:'',
+      suffix:'',
+      path:''
     };
   },
   methods:{
@@ -64,6 +73,25 @@ export default {
       },
       beforeRemove(file) {
         return this.$confirm(`确定移除 ${ file.name }？`);
+      },
+      BeforeUpload(file){
+        if(file){
+          this.newFile.append('file',file);
+          this.filename = this.newFile.get('file').name.split('.')[0]
+          this.suffix = this.newFile.get('file').type.split('/')[1]
+          // console.log(this.filename);
+          // console.log(this.newFile.get('file'));
+        }else{
+          return false
+        }
+      },
+      Upload(){
+        const token = localStorage.getItem('token')
+        const newData = this.newFile;
+        console.log(newData);
+        getfile(token,this.filename,this.suffix,this.path,newData).then((res=>{
+          console.log(res);
+        }))
       }
   }
 };
