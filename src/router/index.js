@@ -11,7 +11,9 @@ import BaseInfor from "../components/configuration/BaseInfor.vue";
 import UserManagement from "../components/configuration/user-manage.vue";
 import FirstCatalog from "../components/fils/first-catalog.vue";
 import SecondCatalog from "../components/fils/second-catalog.vue";
-import deleteFile from "../components/configuration/deleteFile.vue"
+import deleteFile from "../components/configuration/deleteFile.vue";
+import share from "../components/configuration/share.vue";
+import CancelFile from "../components/configuration/cancelFile.vue"
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -130,6 +132,16 @@ export default new Router({
           path:"/home/delete",
           name:"deleteFile",
           component:deleteFile
+        },
+        {
+          path:"/home/share",
+          name:"Share",
+          component:share
+        },
+        {
+          path:"/home/cancel-share",
+          name:"CancelFile",
+          component:CancelFile
         }
       ],
     },

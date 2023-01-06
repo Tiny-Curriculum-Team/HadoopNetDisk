@@ -8,7 +8,7 @@ export default function download(token,require_path){
   return createAxios({
       url:api.downloadfile,
       method:'GET',
-      data:{
+      params:{
         token,
        require_path
       }
