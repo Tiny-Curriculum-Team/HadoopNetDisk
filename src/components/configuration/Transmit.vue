@@ -41,9 +41,7 @@
         <i class="el-icon-download el-icon--right">下载文件</i>
       </el-button>
     </div> -->
-
-
-<el-upload class="upload-demo" 
+    <el-upload class="upload-demo" 
 action="" 
 :on-change="handleChange" 
 :on-remove="handleRemove" 
@@ -55,7 +53,11 @@ multiple
 :before-upload="onBeforeUploadImage">
 <el-button style="margin-top: 40px;" size="small" type="primary">Upload Files</el-button>
 <div slot="tip" class="el-upload__tip">Upload Document, No more than 3 files</div>
+</el-upload>
+
+
   </div>
+ 
 </template>
 
 <script>
