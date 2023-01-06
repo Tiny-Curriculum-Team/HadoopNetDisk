@@ -61,6 +61,7 @@ export default {
       console.log(file, fileList);
     },
     handlePreview(file) {
+       this.newFile.append("file", file);
       console.log(file);
     },
     // handleExceed(files, fileList) {
