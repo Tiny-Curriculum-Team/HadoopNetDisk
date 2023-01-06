@@ -65,6 +65,13 @@ def hdfs_list(client, hdfs_path, verbose=False):
     return client.list(hdfs_path, status=True) if verbose else client.list(hdfs_path, status=False)
 
 
+def hdfs_check_user_folder_exists(client, user_name):
+    file_path = os.path.join("_files", user_name)
+    file_status = client.status(file_path, strict=False)
+    if file_status is None:
+        hdfs_mkdir(client, file_path)
+
+
 ###
 ### HBase
 ###

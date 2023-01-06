@@ -130,12 +130,15 @@ def get_all_files(request):
     user_name = info_dict['username']
 
     request_path = request.GET.get('require_path')
-
     cli = connect_to_hdfs()
+    hdfs_check_user_folder_exists(cli, user_name)
+    request_path = ""
     user_root_dir = os.path.join('_files', user_name, request_path)
     file_dict = hdfs_list(cli, user_root_dir, verbose=True)
     res_dict = {}
+    file_id = 0
     for item in file_dict:
-        res_dict.update({item[0]: item[1]['type']})
-    res = json.dumps(res_dict)
-    return JsonResponse(res)
+        res_dict.update({file_id: {item[0]: item[1]['type']}})
+        file_id += 1
+    print(res_dict)
+    return JsonResponse(res_dict)

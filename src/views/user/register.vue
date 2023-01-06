@@ -39,7 +39,6 @@
           <el-form-item>
             <el-input
               class="inputs"
-              type="password"
               v-model="registerForm.tele"
             />
           </el-form-item>
