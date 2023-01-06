@@ -21,7 +21,7 @@
          <el-button class="b" @click="login">登录</el-button>
          <el-button class="home_href">重置</el-button>
       </div>
-        <el-link type="primary" @click="goRegister">点击注册</el-link>
+        <el-link class="regi" type="primary" @click="goRegister">还没有账号？点击注册</el-link>
         <el-link type="primary" @click="goHomepage">首页</el-link>
         </div>
   </div>
@@ -143,7 +143,7 @@ export default {
   height: 40px;
   color: #fff;
   border-radius: 5px;
-  background: #999;
+  background: rgb(1, 114, 213);
   margin-top: 40px;
 }
 
@@ -161,6 +161,10 @@ export default {
   height: 40px;
   color: #fff;
   border-radius: 5px;
-  background: #ffd204;
+  background: #a4bcd4;
+}
+
+.regi{
+  margin-top: 20px;
 }
 </style>
