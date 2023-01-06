@@ -51,7 +51,7 @@ export default {
     return {
       fileList: [],
       newFile: new FormData(),
-      filename: "",
+      // filename: "",
       path: "",
       require_path:""
     };
@@ -73,9 +73,9 @@ export default {
     BeforeUpload(file) {
       if (file) {
         this.newFile.append("file", file);
-        this.filename = this.newFile.get("file").name;
+        // this.filename = this.newFile.get("file").name;
         // this.suffix = this.newFile.get('file').type.split('/')[1]
-        this.newFile.append('filename',this.filename);
+        // this.newFile.append('filename',this.filename);
         // this.newFile.append('suffix',this.suffix);
         // console.log(this.filename);
         // console.log(this.newFile.get('file'));
@@ -102,7 +102,7 @@ export default {
         if(res.data.code ==200){
             this.$message({
                 showClose: true,
-                message: '登录成功',
+                message: '上传成功',
                 type: 'success'
                 });
           }

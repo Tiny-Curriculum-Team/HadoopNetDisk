@@ -22,6 +22,7 @@
                   <span>首页</span>
                 </template>
                 <el-menu-item index="/home/allfile">全部文件</el-menu-item>
+                <el-menu-item index="/home/delete">删除文件</el-menu-item>
                 <el-menu-item index="/home/classfy">分类文件</el-menu-item>
                 <el-menu-item index="/home/myshare">我的分享</el-menu-item>
               </el-submenu>
