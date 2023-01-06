@@ -59,6 +59,7 @@ export default {
         name:"SecondCatalog",
         params: {
           name,
+          lastName:this.data
         },
       });
     },
@@ -82,5 +83,14 @@ export default {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
+}
+.filPath{
+  display:inline-block;
+  height:100px;
+  width:400px;
+  line-height:100px;
+  flex-shrink:0;
+  font-size:14px;
+  margin-left:20px;
 }
 </style>
