@@ -4,15 +4,13 @@ const api = {
   showfile: "/file/upload/",
 };
 
-export default function getfile(token,filename,path,newData){
+export default function getfile(newData){
   return createAxios({
       url:api.showfile,
       method:'POST',
-      data:{
-        token,
-        filename,
-        path,
-        file:newData
-      }
+      Headers:{
+        'Content-Type': 'multipart/form-data'
+      },
+      data:newData
   })
 }

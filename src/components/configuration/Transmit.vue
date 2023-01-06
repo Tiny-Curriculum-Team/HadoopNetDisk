@@ -74,7 +74,7 @@ export default {
         this.newFile.append("file", file);
         this.filename = this.newFile.get("file").name;
         // this.suffix = this.newFile.get('file').type.split('/')[1]
-        // this.newFile.append('filename',this.filename);
+        this.newFile.append('filename',this.filename);
         // this.newFile.append('suffix',this.suffix);
         // console.log(this.filename);
         // console.log(this.newFile.get('file'));
@@ -84,8 +84,8 @@ export default {
     },
     Upload() {
       const token = localStorage.getItem("token");
-      // this.newFile.append('token',token);
-      // this.newFile.append('path',this.path);
+      this.newFile.append('token',token);
+      this.newFile.append('path',this.path);
       const newData = this.newFile;
       // newData.forEach((value,key)=>{
       //   console.log("key %s: value %s",key,value);
@@ -96,8 +96,16 @@ export default {
       // newData.forEach((value,key)=>{
       //   console.log("key %s: value %s",key,value);
       // })
-      getfile(token, this.filename, this.path, newData).then((res) => {
+      getfile(newData).then((res) => {
         console.log(res);
+        if(res.data.code ==200){
+            this.$router.push('/home')
+            this.$message({
+                showClose: true,
+                message: '登录成功',
+                type: 'success'
+                });
+          }
       });
     },
     downloadFiles(){
