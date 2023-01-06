@@ -8,6 +8,7 @@
                 style="width: 100px; height: 100px"
               ></el-image>
             <span class="filPath">{{this.$route.params.path[1]}}</span>
+            <span class="filPath">{{this.data}}</span>
             <!-- <div>文件类型：{{ item.type }}</div> -->
           </div>
         </div>
@@ -16,6 +17,7 @@
 
 <script>
     import bgcImg from "/src/assets/images/title.jpg";
+    import getfile from "/src/api/file"
     export default {
         name:'FirstCatalog',
         data(){
@@ -25,7 +27,13 @@
             }
         },
         methods:{
-
+          getfils(){
+            let require_path = this.data
+            let token = localStorage.getItem('token')
+            getfile(token,require_path).then((res)=>{
+              console.log(res);
+            })
+          }
         },
        mounted(){
         console.log(this.$route.params.path);

@@ -94,6 +94,7 @@ export default {
       fileImg,
       fileImags,
       fils: [],
+      // require_path:''
     };
   },
   methods: {
@@ -101,7 +102,9 @@ export default {
       console.log(111);
     },
     getfiles() {
-      getfile().then((res) => {
+      let require_path = './'
+      let token = localStorage.getItem('token')
+      getfile(token,require_path).then((res) => {
         // console.log(res.data.data.data.length);
         this.fils = res.data.data.data;
         // for(var i=0;i<res.data.data.data.length;i++){
@@ -111,15 +114,15 @@ export default {
         // console.log(this.fils);
       });
     },
-    goFile(e){
-      console.log(e);
-      var test = e.split("\\");
-      console.log(test);
+    goFile(path){
+      // console.log(e);
+      // var test = e.split("\\");
+      // console.log(test);
       this.$router.push({
         path:'/home/allfile/first-catalog',
         name:'FirstCatalog',
         params:{
-          path:test
+          path
         }
       })
     }
