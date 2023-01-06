@@ -9,9 +9,10 @@
               :src="bgcImg"
               style="width: 100px; height: 100px"
             ></el-image>
-            <span class="filPath" @click="goFile(item.file_name)">{{
+            <span v-if="item.type==='DIRECTORY'" class="filPath" @click="goFile(item.file_name)">{{
               item.file_name
             }}</span>
+            <span v-else class="filPath">{{ item.file_name }}</span>
             <div>文件类型：{{ item.type }}</div>
           </div>
         </div>
