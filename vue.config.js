@@ -64,5 +64,4 @@ module.exports = {
           patterns: [],
       },
   },
-  assetDir:'static'
 }
