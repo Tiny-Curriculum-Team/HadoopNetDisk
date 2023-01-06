@@ -89,9 +89,9 @@ export default {
         this.newFile.append('token',token);
         this.newFile.append('path',this.path);
         const newData = this.newFile;
-        // newData.forEach((value,key)=>{
-        //   console.log("key %s: value %s",key,value);
-        // })
+        newData.forEach((value,key)=>{
+          console.log("key %s: value %s",key,value);
+        })
         getfile(newData).then((res=>{
           console.log(res);
         }))
