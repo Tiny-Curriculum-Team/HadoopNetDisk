@@ -40,7 +40,7 @@ def upload_files(request):
     try:
         hdfs_path = os.path.join("_files", user_name, file_path)
         client_hdfs = connect_to_hdfs()
-        # upload_to_hdfs(client_hdfs, temp_path, hdfs_path)
+        upload_to_hdfs(client_hdfs, temp_path, hdfs_path)
         file_size = os.path.getsize(temp_path) / (1024 * 1024 * 1024)
         current_user = User.objects.get(user_name=user_name)
         current_user.available_store -= file_size
