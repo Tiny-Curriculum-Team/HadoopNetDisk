@@ -18,7 +18,7 @@
                 :src="bgcImg"
                 style="width: 100px; height: 100px"
               ></el-image>
-              <span>分享文字</span>
+              <span class="text">分享文字</span>
             </div>
           </div>
         </div>
@@ -38,7 +38,7 @@
         </div>
         <div style="float: left">
           <div
-            style=" width: 1000px; border: 1px ;solid #d9d9d9; borderRadius: 4px;margin-top:20px;margin-left:80px"
+            style=" width: 1000px; border: 1px ;border: 1px solid #ddd;margin-top:20px;margin-left:80px"
           >
             <div class="block">
               <span class="demonstration"></span>
@@ -71,6 +71,17 @@ import fileImags from "/src/assets/images/file.jpg"
     }
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.block{
+  height:100px;
+  display:flex;
+  align-items:center;
+}
+.text{
+  display:inline-block;
+  height:100px;
+  line-height:100px;
+  flex-shrink:0;
+  font-size:14px;
+}
 </style>

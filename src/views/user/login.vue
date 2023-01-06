@@ -50,7 +50,7 @@ export default {
       },
       login(){
         getLogin(this.loginForm).then((res)=>{
-          // console.log(res.data.token);
+          console.log(res.data.code);
           localStorage.setItem('token',res.data.token);
           if(res.data.code ==200){
             this.$router.push('/home')
