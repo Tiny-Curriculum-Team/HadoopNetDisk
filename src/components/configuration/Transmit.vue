@@ -102,7 +102,7 @@ export default {
         if(res.data.code ==200){
             this.$message({
                 showClose: true,
-                message: '登录成功',
+                message: '上传成功',
                 type: 'success'
                 });
           }

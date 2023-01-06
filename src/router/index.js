@@ -10,7 +10,8 @@ import Transmit from "../components/configuration/Transmit.vue";
 import BaseInfor from "../components/configuration/BaseInfor.vue";
 import UserManagement from "../components/configuration/user-manage.vue";
 import FirstCatalog from "../components/fils/first-catalog.vue";
-import SecondCatalog from "../components/fils/second-catalog.vue"
+import SecondCatalog from "../components/fils/second-catalog.vue";
+import deleteFile from "../components/configuration/deleteFile.vue"
 
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
@@ -124,6 +125,11 @@ export default new Router({
           path:"/home/allfile/second-catalog",
           name:"SecondCatalog",
           component:SecondCatalog
+        },
+        {
+          path:"/home/delete",
+          name:"deleteFile",
+          component:deleteFile
         }
       ],
     },
