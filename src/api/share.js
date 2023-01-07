@@ -6,7 +6,7 @@ const api = {
 
 export default function shareFile(newData){
   return createAxios({
-      url:api.showfile,
+      url:api.sharefile,
       method:'POST',
       Headers:{
         'Content-Type': 'multipart/form-data'
