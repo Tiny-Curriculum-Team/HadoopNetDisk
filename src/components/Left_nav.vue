@@ -39,7 +39,6 @@
                   <span>个人中心</span>
                 </template>
                 <el-menu-item index="/home/baseInfo">基本信息</el-menu-item>
-                <el-menu-item index="/home/user-management">账号管理</el-menu-item>
               </el-submenu>
 
               <el-button class="drop">退出账号</el-button>
