@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import avatar from "/src/assets/images/title.jpg";
+import avatar from "/src/assets/images/ava.jpg";
 export default {
   name: "BaseInfor",
   data() {

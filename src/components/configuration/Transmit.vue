@@ -116,6 +116,15 @@ export default {
         const a = document.createElement('a')
         a.href = url
         a.click()
+        //下载成功
+        console.log(res);
+        if(res.data.code ==200){
+            this.$message({
+                showClose: true,
+                message: '下载成功',
+                type: 'success'
+                });
+          }
       }) 
     }
   },
