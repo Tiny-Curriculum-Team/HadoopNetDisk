@@ -1,3 +1,5 @@
+import os
+
 import jwt
 import time
 import json
@@ -5,23 +7,26 @@ import urllib
 from Files.utils import *
 from Shares.models import Share
 from django.conf import settings
-from django.forms.models import model_to_dict
+from django.utils import timezone
 from django.http import JsonResponse, FileResponse
 from django.contrib.auth.hashers import make_password, check_password
 
 
 # Create your views here.
 def create_sharing(request):
-    token = request.GET.get('token')
+    token = request.POST.get('token')
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
-    single_file = request.FILES.get("files")
+    single_file = request.FILES.get("file")
     share_password = request.POST.get("share_password")
     deadline = request.POST.get("deadline")
     file_size = single_file.size
 
     # for file_name in files:
     share_path = os.path.join(settings.MEDIA_ROOT, user_name, single_file.name)
+    user_temp_root = os.path.join(settings.MEDIA_ROOT, user_name)
+    if not os.path.exists(user_temp_root):
+        os.mkdir(user_temp_root)
     if single_file.multiple_chunks():
         with open(share_path, "wb") as f:
             for chunk in single_file.chunks():
@@ -46,10 +51,14 @@ def create_sharing(request):
 
 
 def del_sharing(request):
-    share_id = request.POST.get("share_id")
+    token = request.GET.get('token')
+    info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
+    user_name = info_dict['username']
+
+    file_name = request.POST.get("file_name")
     share_password = request.POST.get("share_password")
 
-    to_del = Share.objects.get(share_id=share_id)
+    to_del = Share.objects.get(file_path=os.path.join(settings.MEDIA_ROOT, user_name, file_name))
     file_path = to_del.file_path
     if check_password(share_password, to_del.share_password):
         to_del.delete()
@@ -80,8 +89,9 @@ def list_shares(request):
     user_name = info_dict['username']
 
     shares = Share.objects.filter(user_name=user_name).values("file_path")
-    file_list = []
+    file_list = {}
+    file_id = 0
     for path_item in shares:
-        print(path_item, type(path_item))
-        file_list.append(str(path_item).split("/")[-1])
-    return JsonResponse({"code": 200, "data": file_list})
+        file_list.update({file_id: {"file_name": path_item['file_path'].split("/")[-1]}})
+        file_id += 1
+    return JsonResponse(file_list)
