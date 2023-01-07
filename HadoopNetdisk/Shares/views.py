@@ -55,8 +55,9 @@ def del_sharing(request):
     info_dict = jwt.decode(token, 'secret_key', algorithms=['HS256'])
     user_name = info_dict['username']
 
-    file_name = request.POST.get("file_name")
-    share_password = request.POST.get("share_password")
+    file_name = request.GET.get("file_name")
+    print(file_name)
+    share_password = request.GET.get("share_password")
 
     to_del = Share.objects.get(file_path=os.path.join(settings.MEDIA_ROOT, user_name, file_name))
     file_path = to_del.file_path
