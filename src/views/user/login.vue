@@ -13,7 +13,7 @@
       <div class="form_input">
         <span>密码：</span>
         <el-form-item>
-        <el-input class="inputs" type="password" v-model="loginForm.password"/>
+        <el-input class="inputs" type="password" v-model="loginForm.password" show-password/>
         </el-form-item>
       </div>
       </el-form>

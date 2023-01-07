@@ -26,7 +26,6 @@
                 <el-menu-item index="/home/share">上传分享文件</el-menu-item>
                 <el-menu-item index="/home/myshare">我的分享</el-menu-item>
                 <el-menu-item index="/home/cancel-share">取消分享</el-menu-item>
-                <el-menu-item index="/home/classfy">分类文件</el-menu-item>
               </el-submenu>
 
               <el-menu-item index="/home/transmit">

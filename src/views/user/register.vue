@@ -21,6 +21,7 @@
               class="inputs"
               type="password"
               v-model="registerForm.password1"
+              show-password
             />
           </el-form-item>
         </div>
@@ -31,6 +32,7 @@
               class="inputs"
               type="password"
               v-model="registerForm.password2"
+              show-password
             />
           </el-form-item>
         </div>

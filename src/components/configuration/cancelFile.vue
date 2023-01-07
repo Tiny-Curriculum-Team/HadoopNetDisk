@@ -4,7 +4,7 @@
         <p style="margin-top:20px">请输入分享id</p>
         <el-input v-model="share_id"></el-input>
         <p style="margin-top:20px">请输入分享密码</p>
-        <el-input v-model="share_password" type="password"></el-input>
+        <el-input v-model="share_password" type="password" show-password></el-input>
         <el-button @click="cancelFils" type="primary" style="margin-top:20px">确定提交</el-button>
     </div>
 </template>
