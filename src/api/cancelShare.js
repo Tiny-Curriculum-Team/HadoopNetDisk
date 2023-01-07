@@ -4,7 +4,7 @@ const api = {
   cancelfile: "/share/cancelshare/",
 };
 
-export default function cancelShare(share_id,share_password){
+export default function cancelShare(token,file_name,share_password){
     return createAxios({
         url:api.cancelfile,
         method:'GET',
@@ -12,7 +12,8 @@ export default function cancelShare(share_id,share_password){
           'Content-Type': 'application/x-www-form-urlencoded'
           }, 
         params:{
-            share_id,
+            token,
+            file_name,
             share_password
         }
     })
