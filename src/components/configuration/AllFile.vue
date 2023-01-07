@@ -107,6 +107,13 @@ export default {
       const token = localStorage.getItem('token')
       searchFile(token,this.prefix).then((res)=>{
         this.fils = res.data;
+        if(res.data.code ==200){
+            this.$message({
+                showClose: true,
+                message: '搜索成功',
+                type: 'success'
+                });
+          }
       })
     },
     getfiles() {
