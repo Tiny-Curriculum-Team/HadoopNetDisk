@@ -4,7 +4,11 @@
     <div class="nav">
       <el-row class="tac">
           <div class="logo-top">
-            <svg-icon icon-class="logo"></svg-icon>
+            <el-image
+                :src="logo1"
+                style="width: 50px; height: 50px"
+                class="logoImg"
+              ></el-image>
             <h3 class="title">网盘系统</h3>
           </div>
           <el-container>
@@ -54,7 +58,13 @@
 </template>
 
 <script>
+import logo1 from "/src/assets/images/logo1.png";
 export default {
+  data(){
+    return {
+      logo1
+    };
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -86,6 +96,11 @@ export default {
   color: black;
   text-align: center;
   margin-top: 30px;
+  margin-left: 20px;
+}
+.logoImg{
+  margin-top: 20px;
+  margin-left: 20px;
 }
 .drop {
   margin-top: 100px;

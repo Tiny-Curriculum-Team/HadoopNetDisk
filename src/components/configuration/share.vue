@@ -30,6 +30,9 @@
       </div>
         <div class="el-upload__tip" slot="tip">请勿上传1G以上的文件</div>
       </el-upload>
+      <div class="el_share_button">
+        <el-button type="primary">确认分享</el-button>
+      </div>
       
     </div>
     </div>
@@ -86,5 +89,7 @@ import shareFile from '/src/api/share'
 </script>
 
 <style scoped>
-
+.el_share_button{
+  margin-top: 20px;
+}
 </style>
