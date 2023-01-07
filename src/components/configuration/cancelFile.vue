@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>取消收藏</h1>
+        <h1>取消分享</h1>
         <p style="margin-top:20px">请输入分享id</p>
         <el-input v-model="share_id"></el-input>
         <p style="margin-top:20px">请输入分享密码</p>
@@ -25,12 +25,12 @@ import cancelShare from "/src/api/cancelShare"
                     if(res.data.code ==200){
             this.$message({
                 showClose: true,
-                message: '取消成功',
+                message: '取消分享成功',
                 type: 'success'
                 });
-          }
-                })
             }
+          })
+        }
         }
     }
 </script>

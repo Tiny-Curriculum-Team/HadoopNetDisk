@@ -23,21 +23,20 @@
     </div>
     <div class="upload">
       <div class="div-label">
-        <label
-          >请输入需要下载的文件<span style="font-weight: bold;padding-bottom:20px"
-            ></span
-          ></label
-        >
+        <label>请输入需要下载的文件<span style="font-weight: bold;padding-bottom:20px"></span></label>
         <el-input placeholder="请输入文件路径" v-model="require_path"></el-input>
       </div>
-      <el-button
+      <div class="el_download_text">
+        <el-button
         @click="downloadFiles"
         class="el-button-color add-button-box"
         size="medium"
         type="primary"
-      >
-        <i class="el-icon-download el-icon--right">下载文件</i>
+      > 
+          <i class="el-icon-download el-icon--right">下载文件</i>
       </el-button>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -116,6 +115,15 @@ export default {
         const a = document.createElement('a')
         a.href = url
         a.click()
+        //下载成功
+        console.log(res);
+        if(res.data.code ==200){
+            this.$message({
+                showClose: true,
+                message: '下载成功',
+                type: 'success'
+                });
+          }
       }) 
     }
   },
@@ -130,5 +138,11 @@ export default {
   width: 500px;
   height: 500px;
   margin-left: 50px;
+}
+.el-upload__text{
+  margin-top: 10px;
+}
+.el_download_text{
+  margin-top: 10px;
 }
 </style>

@@ -8,16 +8,16 @@ from hbase import Hbase
 from hbase.ttypes import Mutation
 
 
-def zip_ya(compress_dir, file_name, file_path):
-    zip_file_path = os.path.join(file_path, file_name)
-    z = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
-    for dirpath, dirnames, filenames in os.walk(compress_dir):
-        fpath = dirpath.replace(compress_dir, '')
-        fpath = fpath and fpath + os.sep or ''
-        for filename in filenames:
-            z.write(os.path.join(dirpath, filename), fpath + filename)
-            print('压缩成功')
-    z.close()
+# def zip_ya(compress_dir, file_name, file_path):
+#     zip_file_path = os.path.join(file_path, file_name)
+#     z = zipfile.ZipFile(zip_file_path, 'w', zipfile.ZIP_DEFLATED)
+#     for dirpath, dirnames, filenames in os.walk(compress_dir):
+#         fpath = dirpath.replace(compress_dir, '')
+#         fpath = fpath and fpath + os.sep or ''
+#         for filename in filenames:
+#             z.write(os.path.join(dirpath, filename), fpath + filename)
+#             print('压缩成功')
+#     z.close()
 
 
 def connect_to_hdfs():
@@ -49,7 +49,8 @@ def upload_to_hdfs(cli, local_path, hdfs_path):
 
 # 从hdfs获取文件到本地
 def download_from_hdfs(cli, hdfs_path, local_path):
-    cli.download(hdfs_path, local_path, overwrite=False)
+    if not os.path.exists(local_path):
+        cli.download(hdfs_path, local_path, overwrite=False)
 
 
 #覆盖数据写到hdfs文件
@@ -147,12 +148,17 @@ def insert_a_row(client, table_name, row_name, col_family, column_name, value):
     print('在{0}表{1}列簇{2}列插入{3}数据成功.'.format(table_name, col_family, column_name, value))
 
 
-def find_file(client, table_name, prefix, columus: list = None):
+def find_file(client, table_name, prefix, columus: list = None) -> dict:
     if columus is None:
         columus = []
     scan_id = client.scannerOpenWithPrefix(table_name, prefix, columus)
     result = client.scannerGet(scan_id)
-    return result
+    res_dict = {}
+    item_id = 0
+    for item in result:
+        res_dict.update({ item_id: {"file_name": item.columns["fileinfo:filename"].value, "type": "FILE"}})
+        item_id += 1
+    return res_dict
 
 
 def query_a_row(client, table_name, row_name, col_name=None, columns=None):

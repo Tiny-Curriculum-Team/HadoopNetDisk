@@ -211,7 +211,7 @@ export default {
   height: 40px;
   color: #fff;
   border-radius: 5px;
-  background: #ffd204;
+  background: rgb(1, 114, 213);
 }
 
 .avatar-uploader .el-upload {

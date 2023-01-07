@@ -66,7 +66,7 @@ import shareFile from '/src/api/share'
       });
     },
   },
-    }
+  }
 </script>
 
 <style scoped>

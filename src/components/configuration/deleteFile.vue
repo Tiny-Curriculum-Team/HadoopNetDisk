@@ -1,8 +1,8 @@
 <template>
     <div>
         <span>请输入需要删除的文件路径</span>
-        <el-input v-model="file_paths"></el-input>
-        <el-button type="danger" @click="deleteFils">删除文件</el-button>
+        <el-input class="input" v-model="file_paths"></el-input>
+        <el-button type="danger" @click="deleteFils" class="delFile">删除文件</el-button>
     </div>
 </template>
 
@@ -33,5 +33,12 @@ import deleteFile from "/src/api/delete"
 </script>
 
 <style scoped>
+.input{
+    margin-top: 10px;
+}
+
+.delFile{
+    margin-top: 10px;
+}
 
 </style>
